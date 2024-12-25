@@ -33,6 +33,7 @@ eval set -- "$opts"
 flag_i=
 flag_n=
 flag_s=
+flag_env=
 user=
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -41,6 +42,7 @@ while [ $# -gt 0 ]; do
 		-s | --shell) flag_s='-s';;
 		-u | --user) user=${2#\#}; shift;;
 		-h | --help) help; exit 0;;
+		--preserve-env) flag_env='env $2'; shift;;
 		--) shift; break;;
 	esac
 	shift
@@ -52,7 +54,7 @@ if [ "$flag_i" ] && [ "$flag_s" ]; then
 fi
 
 _doas() {
-	exec doas $flag_n ${user:+-u "$user"} "$@"
+	exec doas $flag_n ${user:+-u "$user"} $flag_env "$@"
 }
 
 user_shell() {
