@@ -4,7 +4,7 @@ set -u
 help() {
 	cat <<-EOF
 	Usage:
-	  sudo (-i | -s) [-n] [-u <user>] [<command> [--] [<args>...]]
+	  sudo (-i | -s) [-n] [-u <user>] [--preserve-env <env>] [<command> [--] [<args>...]]
 	  sudo [-ins] [-u <user>] <command> [--] [<args>...]
 	  sudo [-h]
 
@@ -24,7 +24,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # Note: "+" disables optional option parameters
-opts=$(getopt -n sudo -o +insu:h -l login,non-interactive,shell,user:,help -- "$@") || {
+opts=$(getopt -n sudo -o +insu:h -l login,non-interactive,preserve-env,shell,user:,help -- "$@") || {
 	help >&2
 	exit 1
 }
